@@ -42,12 +42,23 @@ function setupCanvas() {
   }
 
   canvasDrawer = new CanvasDrawer(canvasRef.value, {
-    onDrawEnd: recognizeStroke,
+    onDrawEnd: () => {
+      // 清除之前的定时器
+      if (recognitionTimer) {
+        clearTimeout(recognitionTimer)
+      }
+      // 设置新的延迟识别
+      recognitionTimer = setTimeout(() => {
+        recognizeStroke()
+      }, RECOGNITION_DELAY)
+    },
   })
 }
 
 const candidates = ref<string[]>([])
+const lastInputChar = ref<string | null>(null)
 
+// 为侧边按钮添加重复功能
 const repeater = createKeyRepeater()
 
 function startRepeat(e: PointerEvent, action: () => void) {
@@ -60,14 +71,12 @@ function stopRepeat() {
   repeater.stop()
 }
 
-function pressOnce(e: PointerEvent, action: () => void) {
-  e.preventDefault()
-  action()
-}
+// 识别防抖定时器
+let recognitionTimer: ReturnType<typeof setTimeout> | null = null
+const RECOGNITION_DELAY = 800 // 800ms 延迟
 
-// 识别当前笔迹
-async function recognizeStroke() {
-  if (!canvasDrawer || canvasDrawer.getStrokeData().length === 0 || isRecognizing.value)
+// 识别当前笔迹（带防抖）
+async function recognizeStroke() {  if (!canvasDrawer || canvasDrawer.getStrokeData().length === 0 || isRecognizing.value)
     return
 
   const recognizer = getHandwritingRecognizer()
@@ -80,6 +89,13 @@ async function recognizeStroke() {
       const results = await recognizer.recognize(strokeData)
 
       candidates.value = results
+      
+      // 自动选择第一个候选字符
+      if (results.length > 0) {
+        const firstCandidate = results[0]
+        emit('key', { key: firstCandidate })
+        lastInputChar.value = firstCandidate
+      }
     } catch (error) {
       console.error('识别笔迹失败:', error)
     } finally {
@@ -90,12 +106,15 @@ async function recognizeStroke() {
   }
 }
 
-// 组件卸载时清理识别器和计时器
+// 组件卸载时清理识别器和定时器
 onUnmounted(() => {
   if (canvasDrawer) {
     canvasDrawer.destroy()
   }
   repeater.stop()
+  if (recognitionTimer) {
+    clearTimeout(recognitionTimer)
+  }
 })
 
 watchEffect(() => {
@@ -106,8 +125,28 @@ watchEffect(() => {
   }
 })
 
+// 处理删除键
+function handleDelete() {
+  // 如果有候选词，清除候选词和画布
+  if (candidates.value.length > 0) {
+    candidates.value = []
+    lastInputChar.value = null
+    clearCanvas()
+  }
+  
+  // 同时发送删除事件到输入框
+  emit('key', { key: 'delete', isControl: true })
+}
+
 function handleSelection(candidate: string) {
+  // 如果有上一个字符，先删除
+  if (lastInputChar.value) {
+    emit('key', { key: 'delete', isControl: true })
+  }
+  
+  // 输入新字符
   emit('key', { key: candidate })
+  lastInputChar.value = candidate
   candidates.value = []
   clearCanvas()
 }
@@ -153,13 +192,13 @@ function handleSelection(candidate: string) {
         </button>
         <button
           class="handwriting-btn handwriting-btn--function"
-          @pointerdown="(e) => startRepeat(e, () => emit('key', { key: '、' }))"
+          @pointerdown="(e) => startRepeat(e, () => emit('key', { key: ' ' }))"
           @pointerup="stopRepeat"
           @pointerleave="stopRepeat"
           @pointercancel="stopRepeat"
           @contextmenu.prevent
         >
-          、
+          <img src="../assets/icons/keyboard-space.svg" alt="空格" />
         </button>
       </div>
       <div class="handwriting-canvas-container">
@@ -191,7 +230,7 @@ function handleSelection(candidate: string) {
       <div class="handwriting-buttons">
         <button
           class="handwriting-btn handwriting-btn--function"
-          @pointerdown="(e) => startRepeat(e, () => emit('key', { key: 'delete', isControl: true }))"
+          @pointerdown="(e) => startRepeat(e, handleDelete)"
           @pointerup="stopRepeat"
           @pointerleave="stopRepeat"
           @pointercancel="stopRepeat"
@@ -201,7 +240,7 @@ function handleSelection(candidate: string) {
         </button>
         <button
           class="handwriting-btn handwriting-btn--function"
-          @pointerdown="(e) => pressOnce(e, () => emit('exit'))"
+          @pointerup="(e) => { e.preventDefault(); emit('exit') }"
           @contextmenu.prevent
         >
           返回

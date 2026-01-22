@@ -74,6 +74,16 @@
       }
     }
 
+    &--once {
+      background-color: var(--primary-light-color, #A5D6A7);
+      border-color: var(--primary-light-color, #A5D6A7);
+      color: white;
+
+      .zhk-base__key-icon {
+        filter: brightness(0) invert(1);
+      }
+    }
+
     &--disabled {
       background-color: var(--disabled-key-color, #f5f5f5);
       border-color: var(--disabled-key-border-color, #e0e0e0);

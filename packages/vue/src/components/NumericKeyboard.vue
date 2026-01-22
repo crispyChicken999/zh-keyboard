@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type { KeyEvent } from '../types'
-import { createKeyRepeater } from '@zh-keyboard/core'
 import backspaceIcon from '../assets/icons/keyboard-backspace.svg'
 import returnIcon from '../assets/icons/keyboard-return.svg'
 import '../styles/NumericKeyboard.scss'
-import { onBeforeUnmount } from 'vue'
 
 withDefaults(defineProps<{
   keyboardRows?: string[][]
@@ -41,27 +39,6 @@ function goBack() {
   emit('exit')
 }
 
-const repeater = createKeyRepeater()
-
-function startRepeat(e: PointerEvent, action: () => void) {
-  e.preventDefault()
-  ;(e.currentTarget as HTMLElement | null)?.setPointerCapture?.(e.pointerId)
-  repeater.start(action)
-}
-
-function stopRepeat() {
-  repeater.stop()
-}
-
-onBeforeUnmount(() => {
-  repeater.stop()
-})
-
-function pressOnce(e: PointerEvent, action: () => void) {
-  e.preventDefault()
-  action()
-}
-
 function leftKeyAction(key: string): (() => void) {
   if (key === 'back')
     return () => goBack()
@@ -70,21 +47,19 @@ function leftKeyAction(key: string): (() => void) {
   return () => handleKeyPress(key)
 }
 
-function onLeftKeyDown(key: string, e: PointerEvent) {
+function onLeftKeyUp(key: string, e: PointerEvent) {
+  e.preventDefault()
   const action = leftKeyAction(key)
-  if (key === 'back') {
-    pressOnce(e, action)
-    return
-  }
-  startRepeat(e, action)
+  action()
 }
 
-function onFunctionKeyDown(key: string, e: PointerEvent) {
+function onFunctionKeyUp(key: string, e: PointerEvent) {
+  e.preventDefault()
   if (key === '.' || key === '@') {
-    startRepeat(e, () => handleKeyPress(key))
+    handleKeyPress(key)
     return
   }
-  startRepeat(e, () => handleSpecialKey(key))
+  handleSpecialKey(key)
 }
 </script>
 
@@ -102,10 +77,7 @@ function onFunctionKeyDown(key: string, e: PointerEvent) {
                 'num-keyboard__key--back': key === 'back',
                 'num-keyboard__key--space': key === 'space',
               }"
-              @pointerdown="(e) => onLeftKeyDown(key, e)"
-              @pointerup="stopRepeat"
-              @pointerleave="stopRepeat"
-              @pointercancel="stopRepeat"
+              @pointerup="(e) => onLeftKeyUp(key, e)"
               @contextmenu.prevent
             >
               <template v-if="key === 'back'">
@@ -127,10 +99,7 @@ function onFunctionKeyDown(key: string, e: PointerEvent) {
           v-for="(fKey, index) in functionKeys"
           :key="`func-${index}`"
           class="num-keyboard__key num-keyboard__key--function"
-          @pointerdown="(e) => onFunctionKeyDown(fKey.key, e)"
-          @pointerup="stopRepeat"
-          @pointerleave="stopRepeat"
-          @pointercancel="stopRepeat"
+          @pointerup="(e) => onFunctionKeyUp(fKey.key, e)"
           @contextmenu.prevent
         >
           <img v-if="fKey.icon" :src="fKey.icon" class="num-keyboard__key-icon" :alt="fKey.alt" />

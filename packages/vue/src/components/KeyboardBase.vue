@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { KeyEvent } from '../types'
 import { createKeyRepeater } from '@zh-keyboard/core'
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import CandidateBar from './CandidateBar.vue'
 import '../styles/KeyboardBase.scss'
 
@@ -18,6 +18,9 @@ const mode = defineModel<string>({
 })
 
 const isUpperCase = ref(false)
+const capsLockMode = ref<'off' | 'once' | 'lock'>('off')
+const lastShiftClickTime = ref(0)
+const DOUBLE_CLICK_THRESHOLD = 300 // ms
 
 const isChineseMode = computed(() => mode.value === 'zh')
 
@@ -34,8 +37,20 @@ function handleShift() {
     // 在中文模式下，切换到手写输入
     mode.value = 'hand'
   } else {
-    // 在英文模式下，切换大小写
-    isUpperCase.value = !isUpperCase.value
+    // 在英文模式下，智能大小写切换
+    const now = Date.now()
+    const timeSinceLastClick = now - lastShiftClickTime.value
+    
+    if (timeSinceLastClick < DOUBLE_CLICK_THRESHOLD) {
+      // 双击：切换锁定模式
+      capsLockMode.value = capsLockMode.value === 'lock' ? 'off' : 'lock'
+    } else {
+      // 单击：首字母大写
+      capsLockMode.value = capsLockMode.value === 'off' ? 'once' : 'off'
+    }
+    
+    lastShiftClickTime.value = now
+    isUpperCase.value = capsLockMode.value !== 'off'
   }
 }
 
@@ -58,6 +73,15 @@ const keyboardRows = [
 ]
 
 const pinyin = ref('')
+const candidates = ref<string[]>([])
+
+// 监听模式变化，切换模式时清空拼音
+watch(mode, (newMode, oldMode) => {
+  if (oldMode === 'zh' && newMode !== 'zh') {
+    pinyin.value = ''
+    candidates.value = []
+  }
+})
 
 const repeater = createKeyRepeater()
 
@@ -92,6 +116,36 @@ function handleKeyPress(key: string) {
   }
   const outputKey = isUpperCase.value ? key.toUpperCase() : key
   handleSpecialKey(outputKey)
+  
+  // 如果是 'once' 模式，输入后恢复小写
+  if (mode.value === 'en' && capsLockMode.value === 'once') {
+    capsLockMode.value = 'off'
+    isUpperCase.value = false
+  }
+}
+
+function handleSpace() {
+  if (mode.value === 'zh' && pinyin.value && candidates.value.length > 0) {
+    // 拼音模式下有候选词，选择第一个
+    handleSpecialKey(candidates.value[0])
+    pinyin.value = ''
+    candidates.value = []
+    return
+  }
+  // 否则输入空格
+  handleSpecialKey(' ')
+}
+
+function handleEnter() {
+  if (mode.value === 'zh' && pinyin.value) {
+    // 拼音模式下，输入原始拼音作为英文
+    handleSpecialKey(pinyin.value)
+    pinyin.value = ''
+    candidates.value = []
+    return
+  }
+  // 否则正常回车
+  handleSpecialKey('enter', true)
 }
 
 function handleToggleLang() {
@@ -118,6 +172,7 @@ const isHandwritingButtonDisabled = computed(() => {
       <CandidateBar
         v-if="mode === 'zh'"
         v-model="pinyin"
+        v-model:candidates="candidates"
         @input="e => handleSpecialKey(e, false)"
       />
       <template v-else>
@@ -142,7 +197,8 @@ const isHandwritingButtonDisabled = computed(() => {
         v-if="rowIndex === 2"
         class="zhk-base__key zhk-base__key--function zhk-base__key--shift"
         :class="{
-          'zhk-base__key--active': !isChineseMode && isUpperCase,
+          'zhk-base__key--active': !isChineseMode && capsLockMode === 'lock',
+          'zhk-base__key--once': !isChineseMode && capsLockMode === 'once',
           'zhk-base__key--disabled': isChineseMode && isHandwritingButtonDisabled,
         }"
         :disabled="isChineseMode && isHandwritingButtonDisabled"
@@ -202,7 +258,7 @@ const isHandwritingButtonDisabled = computed(() => {
       </button>
       <button
         class="zhk-base__key zhk-base__key--space"
-        @pointerdown="(e) => startRepeat(e, () => handleSpecialKey(' '))"
+        @pointerdown="(e) => startRepeat(e, () => handleSpace())"
         @pointerup="stopRepeat"
         @pointerleave="stopRepeat"
         @pointercancel="stopRepeat"
@@ -226,7 +282,7 @@ const isHandwritingButtonDisabled = computed(() => {
       </button>
       <button
         class="zhk-base__key zhk-base__key--function"
-        @pointerdown="(e) => startRepeat(e, () => handleSpecialKey('enter', true))"
+        @pointerdown="(e) => startRepeat(e, () => handleEnter())"
         @pointerup="stopRepeat"
         @pointerleave="stopRepeat"
         @pointercancel="stopRepeat"

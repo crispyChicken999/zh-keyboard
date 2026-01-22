@@ -22,7 +22,10 @@
     border: none;
     cursor: pointer;
     white-space: nowrap; // 确保候选项不换行
-    aspect-ratio: 1; // 保持宽高比为1:1，形成正方形
     flex-shrink: 0; // 防止在flex容器中被压缩
+    padding: 0 8px; // 添加左右内边距
+    min-width: 40px; // 最小宽度
+    max-height: 40px; // 限制最大高度
+    height: 40px; // 固定高度
   }
 }
