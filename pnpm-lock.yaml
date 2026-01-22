@@ -33,10 +33,10 @@ importers:
 
   examples:
     dependencies:
-      '@zh-keyboard/recognizer':
+      '@crispychicken/zh-keyboard-recognizer':
         specifier: workspace:*
         version: link:../packages/recognizer
-      '@zh-keyboard/vue':
+      '@crispychicken/zh-keyboard-vue':
         specifier: workspace:*
         version: link:../packages/vue
       vue:
@@ -77,15 +77,15 @@ importers:
 
   packages/react:
     dependencies:
+      '@crispychicken/zh-keyboard-core':
+        specifier: workspace:*
+        version: link:../core
+      '@crispychicken/zh-keyboard-recognizer':
+        specifier: workspace:*
+        version: link:../recognizer
       '@reactuses/core':
         specifier: ^6.0.3
         version: 6.0.3(react@18.3.1)
-      '@zh-keyboard/core':
-        specifier: workspace:*
-        version: link:../core
-      '@zh-keyboard/recognizer':
-        specifier: workspace:*
-        version: link:../recognizer
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -120,6 +120,9 @@ importers:
 
   packages/recognizer:
     dependencies:
+      '@crispychicken/zh-keyboard-core':
+        specifier: workspace:*
+        version: link:../core
       '@tensorflow/tfjs-backend-cpu':
         specifier: ^4.22.0
         version: 4.22.0(@tensorflow/tfjs-core@4.22.0)
@@ -129,9 +132,6 @@ importers:
       '@tensorflow/tfjs-core':
         specifier: ^4.22.0
         version: 4.22.0
-      '@zh-keyboard/core':
-        specifier: workspace:*
-        version: link:../core
     devDependencies:
       tsdown:
         specifier: ^0.11.1
@@ -145,15 +145,15 @@ importers:
 
   packages/vue:
     dependencies:
+      '@crispychicken/zh-keyboard-core':
+        specifier: workspace:*
+        version: link:../core
+      '@crispychicken/zh-keyboard-recognizer':
+        specifier: workspace:*
+        version: link:../recognizer
       '@vueuse/core':
         specifier: ^13.1.0
         version: 13.1.0(vue@3.5.13(typescript@5.7.3))
-      '@zh-keyboard/core':
-        specifier: workspace:*
-        version: link:../core
-      '@zh-keyboard/recognizer':
-        specifier: workspace:*
-        version: link:../recognizer
       pinyin-match:
         specifier: ^1.2.10
         version: 1.2.10
