@@ -57,10 +57,6 @@ onBeforeUnmount(() => {
   repeater.stop()
 })
 
-function pressOnce(e: PointerEvent, action: () => void) {
-  e.preventDefault()
-  action()
-}
 
 function leftKeyAction(key: string): (() => void) {
   if (key === 'back')
@@ -73,10 +69,16 @@ function leftKeyAction(key: string): (() => void) {
 function onLeftKeyDown(key: string, e: PointerEvent) {
   const action = leftKeyAction(key)
   if (key === 'back') {
-    pressOnce(e, action)
     return
   }
   startRepeat(e, action)
+}
+
+function onLeftKeyUp(key: string) {
+  stopRepeat()
+  if (key === 'back') {
+    goBack()
+  }
 }
 
 function onFunctionKeyDown(key: string, e: PointerEvent) {
@@ -103,7 +105,7 @@ function onFunctionKeyDown(key: string, e: PointerEvent) {
                 'num-keyboard__key--space': key === 'space',
               }"
               @pointerdown="(e) => onLeftKeyDown(key, e)"
-              @pointerup="stopRepeat"
+              @pointerup="onLeftKeyUp(key)"
               @pointerleave="stopRepeat"
               @pointercancel="stopRepeat"
               @contextmenu.prevent
