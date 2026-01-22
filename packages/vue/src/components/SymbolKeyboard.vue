@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { KeyEvent } from '../types'
-import { createKeyRepeater } from '@zh-keyboard/core'
+import { createKeyRepeater } from '@crispychicken/zh-keyboard-core'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import lockOpenIconUrl from '../assets/icons/lock-open-outline.svg'
 import lockClosedIconUrl from '../assets/icons/lock-outline.svg'

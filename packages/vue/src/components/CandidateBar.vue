@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { KeyEvent } from '../types'
-import { AdvancedPinyinEngine } from '@zh-keyboard/core'
+import { AdvancedPinyinEngine } from '@crispychicken/zh-keyboard-core'
 import { computed, onMounted, ref, watchEffect } from 'vue'
 import { getWordMatcher } from '../utils/wordMatcher'
 import CandidateList from './CandidateList.vue'
@@ -28,9 +28,7 @@ const wordMatcher = getWordMatcher()
 
 // 初始化词库
 onMounted(async () => {
-  console.log('CandidateBar onMounted - 开始初始化词库')
   await wordMatcher.initialize()
-  console.log('CandidateBar onMounted - 词库初始化完成')
 })
 
 // 候选词列表

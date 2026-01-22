@@ -1,4 +1,4 @@
-import type { HandwritingRecognizer } from '@zh-keyboard/core'
+import type { HandwritingRecognizer } from '@crispychicken/zh-keyboard-core'
 
 // 全局变量用于存储手写识别服务实例
 let handwritingRecognizerInstance: HandwritingRecognizer | null = null

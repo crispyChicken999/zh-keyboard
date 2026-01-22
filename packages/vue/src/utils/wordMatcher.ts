@@ -1,7 +1,6 @@
 import PinyinMatch from 'pinyin-match'
-
+import dist from './modern.json'
 // 词库数据类型
-
 
 type WordDict = Record<string, [string, number, string]>
 
@@ -13,18 +12,9 @@ export class WordMatcher {
   async initialize() {
     if (this.initialized) return
 
-    console.log('开始加载词库...')
     try {
-      // 从 public 目录加载词库（使用 modern.json 以提升性能）
-      console.log('正在请求 /modern.json...')
-      const response = await fetch('/modern.json')
-      console.log('响应状态:', response.status, response.statusText)
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      
-      this.wordDict = await response.json()
+
+      this.wordDict = dist as unknown as WordDict
 
       // 转换为数组格式，方便匹配和排序
       this.wordList = Object.entries(this.wordDict).map(([word, entry]) => ({
@@ -37,7 +27,6 @@ export class WordMatcher {
       this.wordList.sort((a, b) => b.frequency - a.frequency)
 
       this.initialized = true
-      console.log(`词库加载完成，共 ${this.wordList.length} 个词`)
     } catch (error) {
       console.error('加载词库失败:', error)
     }

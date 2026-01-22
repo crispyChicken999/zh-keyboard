@@ -1,5 +1,5 @@
 import type { GraphModel, Tensor } from '@tensorflow/tfjs'
-import type { HandwritingRecognizer, RecognizerInitOptions } from '@zh-keyboard/core'
+import type { HandwritingRecognizer, RecognizerInitOptions } from '@crispychicken/zh-keyboard-core'
 import { loadGraphModel } from '@tensorflow/tfjs-converter'
 import * as tf from '@tensorflow/tfjs-core'
 import '@tensorflow/tfjs-backend-cpu'

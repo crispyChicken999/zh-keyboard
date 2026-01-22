@@ -1,5 +1,5 @@
-import { ZhkRecognizer } from '@zh-keyboard/recognizer'
-import { registerHandwritingRecognizer } from '@zh-keyboard/vue'
+import { ZhkRecognizer } from '@crispychicken/zh-keyboard-recognizer'
+import { registerHandwritingRecognizer } from '@crispychicken/zh-keyboard-vue'
 import { createApp } from 'vue'
 import App from './App.vue'
 

@@ -1,5 +1,5 @@
 import type { KeyEvent } from '../types'
-import { AdvancedPinyinEngine } from '@zh-keyboard/core'
+import { AdvancedPinyinEngine } from '@crispychicken/zh-keyboard-core'
 import React, { useEffect, useMemo, useState } from 'react'
 import chevronRight from '../assets/icons/chevron-right.svg'
 import CandidateList from './CandidateList'

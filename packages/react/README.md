@@ -16,11 +16,11 @@
 ## 安装
 
 ```bash
-npm install @zh-keyboard/react
+npm install @crispychicken/zh-keyboard-react
 # 或者
-yarn add @zh-keyboard/react
+yarn add @crispychicken/zh-keyboard-react
 # 或者
-pnpm add @zh-keyboard/react
+pnpm add @crispychicken/zh-keyboard-react
 ```
 
 ## 属性
@@ -48,9 +48,9 @@ pnpm add @zh-keyboard/react
 - 此外，可以通过在输入框上设置 `data-inputmode` 属性来指定组件默认打开的键盘类型 (可选值为 `'en'`, `'zh'`, `'hand'`, `'num'`)，具体键盘模式的说明请参考 `defaultMode` 属性。
 
 ```tsx
-import { ZhKeyboard } from '@zh-keyboard/react'
+import { ZhKeyboard } from '@crispychicken/zh-keyboard-react'
 import { useState } from 'react'
-import '@zh-keyboard/react/style.css'
+import '@crispychicken/zh-keyboard-react/style.css'
 
 function App() {
   const [inputText, setInputText] = useState('')
@@ -170,7 +170,7 @@ interface HandwritingRecognizer {
 ### 注册手写识别服务
 
 ```typescript
-import { registerHandwritingRecognizer } from '@zh-keyboard/react'
+import { registerHandwritingRecognizer } from '@crispychicken/zh-keyboard-react'
 import { MyHandwritingRecognizer } from './MyHandwritingRecognizer'
 
 // 创建并注册您的手写识别服务
@@ -183,7 +183,7 @@ registerHandwritingRecognizer(recognizer)
 以下是一个简单的手写识别服务示例实现：
 
 ```typescript
-import type { HandwritingRecognizer } from '@zh-keyboard/react'
+import type { HandwritingRecognizer } from '@crispychicken/zh-keyboard-react'
 
 export class MyHandwritingRecognizer implements HandwritingRecognizer {
   private initialized = false

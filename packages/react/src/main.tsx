@@ -1,4 +1,4 @@
-import { ZhkRecognizer } from '@zh-keyboard/recognizer'
+import { ZhkRecognizer } from '@crispychicken/zh-keyboard-recognizer'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'

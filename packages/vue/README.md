@@ -16,11 +16,11 @@
 ## 安装
 
 ```bash
-npm install @zh-keyboard/vue
+npm install @crispychicken/zh-keyboard-vue
 # 或者
-yarn add @zh-keyboard/vue
+yarn add @crispychicken/zh-keyboard-vue
 # 或者
-pnpm add @zh-keyboard/vue
+pnpm add @crispychicken/zh-keyboard-vue
 ```
 
 ## 属性
@@ -47,9 +47,9 @@ pnpm add @zh-keyboard/vue
 
 ```vue
 <script setup>
-import { ZhKeyboard } from '@zh-keyboard/vue'
+import { ZhKeyboard } from '@crispychicken/zh-keyboard-vue'
 import { ref } from 'vue'
-import '@zh-keyboard/vue/style.css'
+import '@crispychicken/zh-keyboard-vue/style.css'
 
 const inputText = ref('')
 </script>

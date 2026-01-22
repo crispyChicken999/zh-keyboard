@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { KeyEvent } from '../types'
-import { createKeyRepeater } from '@zh-keyboard/core'
+import { createKeyRepeater } from '@crispychicken/zh-keyboard-core'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import CandidateBar from './CandidateBar.vue'
 import '../styles/KeyboardBase.scss'

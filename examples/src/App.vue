@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ZhKeyboard } from '@zh-keyboard/vue'
+import { ZhKeyboard } from '@crispychicken/zh-keyboard-vue'
 import { onMounted, ref } from 'vue'
-import '@zh-keyboard/vue/style.css'
+import '@crispychicken/zh-keyboard-vue/style.css'
 
 const inputValue = ref('')
 const inputValueZh = ref('')

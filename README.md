@@ -15,10 +15,10 @@
 
 | 包名 | 版本 | 描述 |
 | --- | --- | --- |
-| [@zh-keyboard/vue](packages/vue) | [![npm](https://img.shields.io/npm/v/@zh-keyboard/vue.svg)](https://www.npmjs.com/package/@zh-keyboard/vue) | Vue 组件库 |
-| [@zh-keyboard/react](packages/react) | [![npm](https://img.shields.io/npm/v/@zh-keyboard/react.svg)](https://www.npmjs.com/package/@zh-keyboard/react) | React 组件库 |
-| [@zh-keyboard/core](packages/core) | [![npm](https://img.shields.io/npm/v/@zh-keyboard/core.svg)](https://www.npmjs.com/package/@zh-keyboard/core) | 核心功能包 |
-| [@zh-keyboard/recognizer](packages/recognizer) | [![npm](https://img.shields.io/npm/v/@zh-keyboard/recognizer.svg)](https://www.npmjs.com/package/@zh-keyboard/recognizer) | 手写识别器 |
+| [@crispychicken/zh-keyboard-vue](packages/vue) | [![npm](https://img.shields.io/npm/v/@crispychicken/zh-keyboard-vue.svg)](https://www.npmjs.com/package/@crispychicken/zh-keyboard-vue) | Vue 组件库 |
+| [@crispychicken/zh-keyboard-react](packages/react) | [![npm](https://img.shields.io/npm/v/@crispychicken/zh-keyboard-react.svg)](https://www.npmjs.com/package/@crispychicken/zh-keyboard-react) | React 组件库 |
+| [@crispychicken/zh-keyboard-core](packages/core) | [![npm](https://img.shields.io/npm/v/@crispychicken/zh-keyboard-core.svg)](https://www.npmjs.com/package/@crispychicken/zh-keyboard-core) | 核心功能包 |
+| [@crispychicken/zh-keyboard-recognizer](packages/recognizer) | [![npm](https://img.shields.io/npm/v/@crispychicken/zh-keyboard-recognizer.svg)](https://www.npmjs.com/package/@crispychicken/zh-keyboard-recognizer) | 手写识别器 |
 
 ## ✨ 功能特点
 
@@ -45,7 +45,7 @@
 
 ```bash
 # 安装Vue组件库
-npm install @zh-keyboard/vue
+npm install @crispychicken/zh-keyboard-vue
 ```
 
 详细使用方法请参阅 [Vue组件文档](packages/vue/README.md)。
@@ -54,7 +54,7 @@ npm install @zh-keyboard/vue
 
 ```bash
 # 安装React组件库
-npm install @zh-keyboard/react
+npm install @crispychicken/zh-keyboard-react
 ```
 
 详细使用方法请参阅 [React组件文档](packages/react/README.md)。

@@ -1,4 +1,4 @@
-# @zh-keyboard/recognizer | 中文手写识别模块
+# @crispychicken/zh-keyboard-recognizer | 中文手写识别模块
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
@@ -24,16 +24,16 @@
 
 ```bash
 # 使用npm
-npm install @zh-keyboard/recognizer
+npm install @crispychicken/zh-keyboard-recognizer
 
 # 或使用pnpm
-pnpm add @zh-keyboard/recognizer
+pnpm add @crispychicken/zh-keyboard-recognizer
 ```
 
 ## 基本用法
 
 ```typescript
-import { ZhkRecognizer } from '@zh-keyboard/recognizer'
+import { ZhkRecognizer } from '@crispychicken/zh-keyboard-recognizer'
 // 如果需要使用WebGL后端，需要手动引入
 import '@tensorflow/tfjs-backend-webgl'
 

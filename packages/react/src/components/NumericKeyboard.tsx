@@ -1,5 +1,5 @@
 import type { KeyEvent } from '../types'
-import { createKeyRepeater } from '@zh-keyboard/core'
+import { createKeyRepeater } from '@crispychicken/zh-keyboard-core'
 import React, { useEffect, useRef } from 'react'
 import keyboardBackspace from '../assets/icons/keyboard-backspace.svg'
 import keyboardReturn from '../assets/icons/keyboard-return.svg'

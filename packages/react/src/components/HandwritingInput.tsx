@@ -1,6 +1,6 @@
 import type { KeyEvent } from '../types'
 import { useElementSize } from '@reactuses/core'
-import { CanvasDrawer, createKeyRepeater } from '@zh-keyboard/core'
+import { CanvasDrawer, createKeyRepeater } from '@crispychicken/zh-keyboard-core'
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import keyboardBackspace from '../assets/icons/keyboard-backspace.svg'
 import keyboardReturn from '../assets/icons/keyboard-return.svg'

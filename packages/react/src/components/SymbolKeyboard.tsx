@@ -1,5 +1,5 @@
 import type { KeyEvent } from '../types'
-import { createKeyRepeater } from '@zh-keyboard/core'
+import { createKeyRepeater } from '@crispychicken/zh-keyboard-core'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import lockOpenIconUrl from '../assets/icons/lock-open-outline.svg'
 import lockClosedIconUrl from '../assets/icons/lock-outline.svg'

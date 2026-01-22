@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { KeyboardPosition } from '@zh-keyboard/core'
+import type { KeyboardPosition } from '@crispychicken/zh-keyboard-core'
 import type { KeyBoardMode, KeyEvent } from '../types'
 import { useActiveElement, useDebounceFn, useElementSize, useEventListener } from '@vueuse/core'
-import { calculateKeyboardPosition, delToInputElement, isInputElement, writeToInputElement } from '@zh-keyboard/core'
+import { calculateKeyboardPosition, delToInputElement, isInputElement, writeToInputElement } from '@crispychicken/zh-keyboard-core'
 import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 import { useHandwritingRecognizer } from '../utils/useHandwritingRecognizer'
 import HandwritingInput from './HandwritingInput.vue'
