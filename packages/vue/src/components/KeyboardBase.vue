@@ -19,8 +19,6 @@ const mode = defineModel<string>({
 
 const isUpperCase = ref(false)
 const capsLockMode = ref<'off' | 'once' | 'lock'>('off')
-const lastShiftClickTime = ref(0)
-const DOUBLE_CLICK_THRESHOLD = 300 // ms
 
 const isChineseMode = computed(() => mode.value === 'zh')
 
@@ -37,19 +35,15 @@ function handleShift() {
     // 在中文模式下，切换到手写输入
     mode.value = 'hand'
   } else {
-    // 在英文模式下，智能大小写切换
-    const now = Date.now()
-    const timeSinceLastClick = now - lastShiftClickTime.value
-    
-    if (timeSinceLastClick < DOUBLE_CLICK_THRESHOLD) {
-      // 双击：切换锁定模式
-      capsLockMode.value = capsLockMode.value === 'lock' ? 'off' : 'lock'
+    // 在英文模式下，循环大小写状态：off -> once -> lock -> off
+    if (capsLockMode.value === 'off') {
+      capsLockMode.value = 'once'
+    } else if (capsLockMode.value === 'once') {
+      capsLockMode.value = 'lock'
     } else {
-      // 单击：首字母大写
-      capsLockMode.value = capsLockMode.value === 'off' ? 'once' : 'off'
+      capsLockMode.value = 'off'
     }
-    
-    lastShiftClickTime.value = now
+
     isUpperCase.value = capsLockMode.value !== 'off'
   }
 }
