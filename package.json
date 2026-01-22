@@ -1,6 +1,6 @@
 {
-  "name": "@zh-keyboard/zh-keyboard-monorepo",
-  "version": "0.4.1",
+  "name": "@crispychicken/zh-keyboard-monorepo",
+  "version": "0.4.2",
   "description": "中文虚拟键盘组件库",
   "type": "module",
   "private": true,
@@ -25,7 +25,7 @@
     "拼音",
     "手写"
   ],
-  "author": "dusionlike",
+  "author": "crispyChicken999",
   "license": "Apache 2.0",
   "packageManager": "pnpm@10.8.1",
   "engines": {

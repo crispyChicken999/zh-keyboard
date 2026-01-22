@@ -1,17 +1,17 @@
 {
-  "name": "@zh-keyboard/react",
+  "name": "@crispychicken/zh-keyboard-react",
   "type": "module",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "基于React的中文虚拟键盘组件",
-  "author": "dusionlike",
+  "author": "crispyChicken999",
   "license": "Apache 2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dusionlike/zh-keyboard",
+    "url": "git+https://github.com/crispyChicken999/zh-keyboard",
     "directory": "packages/react"
   },
   "bugs": {
-    "url": "https://github.com/dusionlike/zh-keyboard/issues"
+    "url": "https://github.com/crispyChicken999/zh-keyboard/issues"
   },
   "keywords": [
     "keyboard",
@@ -47,8 +47,8 @@
   },
   "dependencies": {
     "@reactuses/core": "^6.0.3",
-    "@zh-keyboard/core": "workspace:*",
-    "@zh-keyboard/recognizer": "workspace:*",
+    "@crispychicken/zh-keyboard-core": "workspace:*",
+    "@crispychicken/zh-keyboard-recognizer": "workspace:*",
     "classnames": "^2.5.1"
   },
   "devDependencies": {

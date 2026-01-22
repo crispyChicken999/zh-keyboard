@@ -1,16 +1,16 @@
 {
-  "name": "@zh-keyboard/recognizer",
-  "version": "0.4.1",
+  "name": "@crispychicken/zh-keyboard-recognizer",
+  "version": "0.4.2",
   "description": "中文手写汉字识别器组件",
-  "author": "dusionlike",
+  "author": "crispyChicken999",
   "license": "Apache 2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dusionlike/zh-keyboard",
+    "url": "git+https://github.com/crispyChicken999/zh-keyboard",
     "directory": "packages/recognizer"
   },
   "bugs": {
-    "url": "https://github.com/dusionlike/zh-keyboard/issues"
+    "url": "https://github.com/crispyChicken999/zh-keyboard/issues"
   },
   "keywords": [
     "键盘",
@@ -44,7 +44,7 @@
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
     "@tensorflow/tfjs-converter": "^4.22.0",
     "@tensorflow/tfjs-core": "^4.22.0",
-    "@zh-keyboard/core": "workspace:*"
+    "@crispychicken/zh-keyboard-core": "workspace:*"
   },
   "devDependencies": {
     "tsdown": "^0.11.1",

@@ -1,17 +1,17 @@
 {
-  "name": "@zh-keyboard/vue",
+  "name": "@crispychicken/zh-keyboard-vue",
   "type": "module",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "基于Vue的中文虚拟键盘组件",
-  "author": "dusionlike",
+  "author": "crispyChicken999",
   "license": "Apache 2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dusionlike/zh-keyboard",
+    "url": "git+https://github.com/crispyChicken999/zh-keyboard",
     "directory": "packages/vue"
   },
   "bugs": {
-    "url": "https://github.com/dusionlike/zh-keyboard/issues"
+    "url": "https://github.com/crispyChicken999/zh-keyboard/issues"
   },
   "keywords": [
     "keyboard",
@@ -46,8 +46,8 @@
   },
   "dependencies": {
     "@vueuse/core": "^13.1.0",
-    "@zh-keyboard/core": "workspace:*",
-    "@zh-keyboard/recognizer": "workspace:*",
+    "@crispychicken/zh-keyboard-core": "workspace:*",
+    "@crispychicken/zh-keyboard-recognizer": "workspace:*",
     "pinyin-match": "^1.2.10",
     "vue": "^3.5.13"
   },
