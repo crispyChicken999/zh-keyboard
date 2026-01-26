@@ -1,4 +1,5 @@
 export interface CanvasDrawerOptions {
+  onDrawStart?: () => void
   onDrawEnd?: () => void
   clearDelay?: number
 }
@@ -74,6 +75,12 @@ export class CanvasDrawer {
     this.ctx.lineWidth = 3
     this.ctx.setLineDash([]) // Solid line
 
+    // 绘制起始点
+    this.ctx.beginPath()
+    this.ctx.arc(offsetX, offsetY, this.ctx.lineWidth / 2, 0, Math.PI * 2)
+    this.ctx.fillStyle = this.ctx.strokeStyle as string
+    this.ctx.fill()
+
     // 记录起始点，0表示不是笔画的最后一点
     this.strokeData.push(offsetX, offsetY, 0)
   }
@@ -91,9 +98,19 @@ export class CanvasDrawer {
   }
 
   endStroke(): void {
-    // 标记笔画的最后一点，将最后一组坐标的c设为1
+    // 标记笔画的最后一点,将最后一组坐标的c设为1
     if (this.strokeData.length >= 3) {
       this.strokeData[this.strokeData.length - 1] = 1
+      
+      // 如果只有一个点(起点和终点重叠),绘制一个小圆点
+      if (this.strokeData.length === 3) {
+        const x = this.strokeData[0]
+        const y = this.strokeData[1]
+        this.ctx.beginPath()
+        this.ctx.arc(x, y, this.ctx.lineWidth / 2, 0, Math.PI * 2)
+        this.ctx.fillStyle = this.ctx.strokeStyle as string
+        this.ctx.fill()
+      }
     }
   }
 
@@ -135,13 +152,35 @@ export class CanvasDrawer {
     const { offsetX, offsetY } = this.getEventCoordinates(e)
     this.startDrawing(offsetX, offsetY)
     this.resetClearTimer()
+    if (this.options.onDrawStart) {
+      this.options.onDrawStart()
+    }
   }
 
   private handleMove = (e: MouseEvent | TouchEvent) => {
     if (!this.isDrawing)
       return
     e.preventDefault()
-    const { offsetX, offsetY } = this.getEventCoordinates(e)
+    
+    // 获取坐标,如果是document上的事件需要特殊处理
+    let offsetX: number, offsetY: number
+    if (e.target === this.canvas) {
+      const coords = this.getEventCoordinates(e)
+      offsetX = coords.offsetX
+      offsetY = coords.offsetY
+    } else {
+      // 鼠标在canvas外,计算相对于canvas的坐标
+      const rect = this.canvas.getBoundingClientRect()
+      if (e instanceof MouseEvent) {
+        offsetX = e.clientX - rect.left
+        offsetY = e.clientY - rect.top
+      } else {
+        const touch = (e as TouchEvent).touches[0] || (e as TouchEvent).changedTouches[0]
+        offsetX = touch.clientX - rect.left
+        offsetY = touch.clientY - rect.top
+      }
+    }
+    
     this.draw(offsetX, offsetY)
     this.resetClearTimer()
   }
@@ -160,9 +199,9 @@ export class CanvasDrawer {
 
   private attachEvents(): void {
     this.canvas.addEventListener('mousedown', this.handleStart)
-    this.canvas.addEventListener('mousemove', this.handleMove)
-    this.canvas.addEventListener('mouseup', this.handleEnd)
-    this.canvas.addEventListener('mouseleave', this.handleEnd)
+    // 将mousemove和mouseup绑定到document,支持canvas外继续绘制
+    document.addEventListener('mousemove', this.handleMove)
+    document.addEventListener('mouseup', this.handleEnd)
 
     this.canvas.addEventListener('touchstart', this.handleStart, { passive: false })
     this.canvas.addEventListener('touchmove', this.handleMove, { passive: false })
@@ -172,9 +211,8 @@ export class CanvasDrawer {
 
   private detachEvents(): void {
     this.canvas.removeEventListener('mousedown', this.handleStart)
-    this.canvas.removeEventListener('mousemove', this.handleMove)
-    this.canvas.removeEventListener('mouseup', this.handleEnd)
-    this.canvas.removeEventListener('mouseleave', this.handleEnd)
+    document.removeEventListener('mousemove', this.handleMove)
+    document.removeEventListener('mouseup', this.handleEnd)
 
     this.canvas.removeEventListener('touchstart', this.handleStart)
     this.canvas.removeEventListener('touchmove', this.handleMove)

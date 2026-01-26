@@ -42,12 +42,18 @@ function setupCanvas() {
   }
 
   canvasDrawer = new CanvasDrawer(canvasRef.value, {
+    onDrawStart: () => {
+      // 用户开始画笔画，清除识别定时器
+      if (recognitionTimer) {
+        clearTimeout(recognitionTimer)
+        recognitionTimer = null
+      }
+    },
     onDrawEnd: () => {
-      // 清除之前的定时器
+      // 笔画结束，启动延迟识别
       if (recognitionTimer) {
         clearTimeout(recognitionTimer)
       }
-      // 设置新的延迟识别
       recognitionTimer = setTimeout(() => {
         recognizeStroke()
       }, RECOGNITION_DELAY)
@@ -73,10 +79,11 @@ function stopRepeat() {
 
 // 识别防抖定时器
 let recognitionTimer: ReturnType<typeof setTimeout> | null = null
-const RECOGNITION_DELAY = 800 // 800ms 延迟
+const RECOGNITION_DELAY = 800 // 2500ms 延迟,给用户更多时间输入多笔画
 
-// 识别当前笔迹（带防抖）
-async function recognizeStroke() {  if (!canvasDrawer || canvasDrawer.getStrokeData().length === 0 || isRecognizing.value)
+// 识别当前笔迹(带防抖)
+async function recognizeStroke() {
+  if (!canvasDrawer || canvasDrawer.getStrokeData().length === 0 || isRecognizing.value)
     return
 
   const recognizer = getHandwritingRecognizer()
@@ -95,11 +102,19 @@ async function recognizeStroke() {  if (!canvasDrawer || canvasDrawer.getStrokeD
         const firstCandidate = results[0]
         emit('key', { key: firstCandidate })
         lastInputChar.value = firstCandidate
+        
+        // 识别成功后清空画布
+        clearCanvas()
       }
     } catch (error) {
       console.error('识别笔迹失败:', error)
     } finally {
       isRecognizing.value = false
+      // 清除识别定时器
+      if (recognitionTimer) {
+        clearTimeout(recognitionTimer)
+        recognitionTimer = null
+      }
     }
   } else {
     console.warn('手写识别服务不可用')
